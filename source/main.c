@@ -1,7 +1,7 @@
 /*	Author: Marco Baez
  *  Partner(s) Name: NA
  *	Lab Section:021
- *	Assignment: Lab #14  Exercise Basic
+ *	Assignment: Lab #14  Exercise Advancement 1
  *	Exercise Description: [optional - include for your own benefit]
  *
  *	I acknowledge all content contained herein, excluding template or example
