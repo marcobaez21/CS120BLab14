@@ -164,51 +164,19 @@ enum bstates{moveball};
 int moveball_tick(int bstate){
 //	countv = 0x01;
 	switch(bstate){
-		case moveball:
+		case moveball: 
 			if(countv==0x00){row[1]=0xFD;bally=2;} //double check these values...
-                        else if(countv==0x01){row[1]=0xFB;bally=3;}//nvm
-                        else if(countv==0x02){row[1]=0xF7;bally=4;}
-                        else if(countv==0x03){row[1]=0xEF;bally=5;}
-                        else if(countv==0x04){row[1]=0xF7;bally=4;}
-                        else if(countv==0x05){row[1]=0xFB;bally=3;}
-                        else if(countv==0x06){row[1]=0xFD;bally=2;}
-                        else if(countv==0x07){row[1]=0xFE;bally=1;}
-                        countv++;
-                        if(countv>7){countv=0;}
-
-		       /* if(countv==0x01){row[1]=0xFE;bally=1;}
-			else if(countv==0x02){row[1]=0xFD;bally=2;} //double check these values...
-                        else if(countv==0x03){row[1]=0xFB;bally=3;}//nvm
-                        else if(countv==0x04){row[1]=0xF7;bally=4;}
-                        else if(countv==0x05){row[1]=0xEF;bally=5;}
-                        else if(countv==0x06){row[1]=0xF7;bally=4;}
-                        else if(countv==0x07){row[1]=0xFB;bally=3;}
-                        else if(countv==0x08){row[1]=0xFD;bally=2;}
-                        else if(countv==0x09){row[1]=0xFE;bally=1;}
-                        countv++;
-                        if(countv>9){countv=1;}*/
-
-		//	if(countv==0x01){row[1]=0xFE;bally=1;}
-		//	else if(countv==0x02){row[1]=0xFD;bally=2;} //double check these values...
-		//	else if(countv==0x03){row[1]=0xFB;bally=3;}//nvm
-		//	else if(countv==0x04){row[1]=0xF7;bally=4;}
-		//	else if(countv==0x05){row[1]=0xEF;bally=5;}
-		//	else if(countv==0x04){row[1]=0xF7;bally=4;}
-		//	else if(countv==0x05){row[1]=0xFB;bally=3;}
-		//	else if(countv==0x06){row[1]=0xFD;bally=2;}
-		//	else if(countv==0x07){row[1]=0xFE;bally=1;}
-		//	countv++;
-		//	if(countv>0x05){bstate=moveballup;countv=1;}
+			else if(countv==0x01){row[1]=0xFB;bally=3;}//nvm
+			else if(countv==0x02){row[1]=0xF7;bally=4;}
+			else if(countv==0x03){row[1]=0xEF;bally=5;}
+			else if(countv==0x04){row[1]=0xF7;bally=4;}
+			else if(countv==0x05){row[1]=0xFB;bally=3;}
+			else if(countv==0x06){row[1]=0xFD;bally=2;}
+			else if(countv==0x07){row[1]=0xFE;bally=1;}
+			countv++;
+			if(countv>7){countv=0;}
 		//	if cout
 		//	row[1]=0xFB;
-	/*	case moveballup:
-			if(countv==0x01){row[1]=0xEF;bally=5;}
-			if(countv==0x02){row[1]=0xF7;bally=4;}
-			else if(countv==0x03){row[1]=0xFB;bally=3;}
-			else if(countv==0x04){row[1]=0xFD;bally=2;}
-			else if(countv==0x05){row[1]=0xFE;bally=1;}
-			countv++;
-			if(countv>0x05){bstate=moveball;countv=1;}*/
 
 			
 	}
@@ -221,11 +189,11 @@ unsigned char paddleleftx = 0x00;
 unsigned char paddlerightx = 0x00;
 enum bxstates{ballstart, movexball,keepleft,keepright};
 int movexball_tick(int bxstate){
-//	paddleleftx=paddlecenterx+1;
-//	paddlerightx=paddlecenterx-1;
+	paddleleftx=paddlecenterx+1;
+	paddlerightx=paddlecenterx-1;
 	switch(bxstate){
 		case ballstart:
-/*			pattern[0]=0x07;
+			pattern[0]=0x07;
 			pattern[1]=0x10;
 			pattern[2]=0x38;
 			row[0]=0xFE;
@@ -234,7 +202,7 @@ int movexball_tick(int bxstate){
 			ballx=5;
 			bally=2;
 			wasleft=0;
-			wasright=0;*/
+			wasright=0;
 			bxstate=movexball;
 			break;
 
@@ -245,15 +213,15 @@ int movexball_tick(int bxstate){
 				//else if((ballx==(paddlecenterx-1))&&(wasright=0x01)){bxstate=keepleft;was}
 			//	else if(ballx==(paddlecenterx+1)){bxstate=keepleft;}
 			//	else if(ballx==(paddlecenterx-1)){bxstate=keepright;}
-				if((wasleft==0x01)&&(ballx==paddlecenterx+1)){bxstate=keepright;}
-				else if((wasleft==0x01)&&(ballx==paddlecenterx-1)){bxstate=keepright;}
+				if((wasleft==0x01)&&(ballx==paddleleftx)){bxstate=keepright;}
+				else if((wasleft==0x01)&&(ballx==paddlerightx)){bxstate=keepright;}
 				else if((wasleft==0x01)&&(ballx==paddlecenterx)){bxstate=keepleft;}
-				else if((wasright==0x01)&&(ballx==paddlecenterx+1)){bxstate=keepleft;}
-				else if((wasright==0x01)&&(ballx==paddlecenterx-1)){bxstate=keepleft;}
+				else if((wasright==0x01)&&(ballx==paddleleftx)){bxstate=keepleft;}
+				else if((wasright==0x01)&&(ballx==paddlerightx)){bxstate=keepleft;}
 				else if((wasright==0x01)&&(ballx==paddlecenterx)){bxstate=keepright;}
-				else if((wasleft==0x00&&wasright==0x00)&&(ballx==paddlecenterx+1)){bxstate=keepleft;}
-				else if((wasleft==0x00&&wasright==0x00)&&(ballx==paddlecenterx-1)){bxstate=keepright;}
-				else if((wasleft==0x01||wasright==0x01)&&(ballx!=paddlecenterx+1&&ballx!=paddlecenterx&&ballx!=paddlecenterx-1)){bxstate=ballstart;}
+				else if((wasleft==0x00&&wasright==0x00)&&(ballx==paddleleftx)){bxstate=keepleft;}
+				else if((wasleft==0x00&&wasright==0x00)&&(ballx==paddlerightx)){bxstate=keepright;}
+				else if((wasleft==0x01||wasright==0x01)&&(ballx!=paddleleftx&&ballx!=paddlecenterx&&ballx!=paddlerightx)){bxstate=ballstart;}
 			//		bxstate=reset;
 
 			}
@@ -262,35 +230,38 @@ int movexball_tick(int bxstate){
 			if(bally==1){bxstate=movexball;}
 			else{
 				if(ballx==8){bxstate=keepright;}//have to change it so it goes back to case movexball
-					else if(ballx==1){pattern[1]=0x02;/*ballx=2;*/}
-					else if(ballx==2){pattern[1]=0x04;/*ballx=3;*/}
-					else if(ballx==3){pattern[1]=0x08;/*ballx=4;*/}
-					else if(ballx==4){pattern[1]=0x10;/*ballx=5;*/}
-					else if(ballx==5){pattern[1]=0x20;/*ballx=5;*/}
-					else if(ballx==6){pattern[1]=0x40;/*ballx=7;*/}
-					else if(ballx==7){pattern[1]=0x80;/*ballx=8;*/}
-					ballx++;
+				else{
+					if(ballx==1){pattern[1]=0x02;}
+					else if(ballx==2){pattern[1]=0x04;}
+					else if(ballx==3){pattern[1]=0x08;}
+					else if(ballx==4){pattern[1]=0x10;}
+					else if(ballx==5){pattern[1]=0x20;}
+					else if(ballx==6){pattern[1]=0x40;}
+					else if(ballx==7){pattern[1]=0x80;}
+	//				ballx++;
 					wasleft=0x01;
 					wasright=0x00;
 					}
-				
+				}
 		//	ballx++;
 			break;
 		case keepright:
 			if(bally==1){bxstate=movexball;}
 			else{
 			if(ballx==1){bxstate=keepleft;}
-				else if(ballx==8){pattern[1]=0x40;/*ballx=7;*/}
-				else if(ballx==7){pattern[1]=0x20;/*ballx=6;*/}
-				else if(ballx==6){pattern[1]=0x10;/*ballx=5;*/}
-				else if(ballx==5){pattern[1]=0x08;/*ballx=4;*/}
-				else if(ballx==4){pattern[1]=0x04;/*ballx=3;*/}
-				else if(ballx==3){pattern[1]=0x02;/*ballx=2;*/}
-				else if(ballx==2){pattern[1]=0x01;/*ballx=1;*/}
-				ballx--;
+			else{
+				if(ballx==8){pattern[1]=0x40;}
+				else if(ballx==7){pattern[1]=0x20;}
+				else if(ballx==6){pattern[1]=0x10;}
+				else if(ballx==5){pattern[1]=0x08;}
+				else if(ballx==4){pattern[1]=0x04;}
+				else if(ballx==3){pattern[1]=0x02;}
+				else if(ballx==2){pattern[1]=0x01;}
+			//	ballx--;
 				wasleft=0x00;
 				wasright=0x01;
-			
+			}
+		
 		}
 		//	ballx--;
 
@@ -332,27 +303,27 @@ int main(void) {
     A2D_init();
     unsigned char temp2 = 0x00;
     tasks[temp2].state=RefreshADC;
-    tasks[temp2].period=100;
+    tasks[temp2].period=200;
     tasks[temp2].elapsedtime=0;
     tasks[temp2].TickFct=&tick_ADC;
     ++temp2;
     tasks[temp2].state=start;
-    tasks[temp2].period=100;
+    tasks[temp2].period=200;
     tasks[temp2].elapsedtime=0;
     tasks[temp2].TickFct=&tick_LEDS;
     ++temp2;
     tasks[temp2].state=moveball;
-    tasks[temp2].period=100;
+    tasks[temp2].period=200;
     tasks[temp2].elapsedtime=0;
     tasks[temp2].TickFct=&moveball_tick;
     ++temp2;
     tasks[temp2].state=ballstart;
-    tasks[temp2].period=100;
+    tasks[temp2].period=200;
     tasks[temp2].elapsedtime=0;
     tasks[temp2].TickFct=&movexball_tick;
     ++temp2;    
     tasks[temp2].state=startAI;
-    tasks[temp].period=100;
+    tasks[temp].period=200;
     tasks[temp2].elapsedtime=0;
     tasks[temp2].TickFct=&AI_tick;
     ++temp2;
