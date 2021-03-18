@@ -13,6 +13,8 @@
 #include <avr/interrupt.h>
 #ifdef _SIMULATE_
 #include "simAVRHeader.h"
+#include <stdlib.h>
+#include <time.h>
 #endif
 
 
@@ -101,19 +103,21 @@ unsigned char ballx = 5;
 unsigned char bally = 2;
 unsigned char wasleft = 0x00;
 unsigned char wasright = 0x00;
+int rnum = 0;
 
 enum AIStates{startAI};
 int AI_tick(int aistate){
+	rnum=rand()%100;
 	switch(aistate){
 		case startAI:
-			if(ballx==1){pattern[2]=0x07;}
-			else if(ballx==2){pattern[2]=0x07;}
-			else if(ballx==3){pattern[2]=0x0E;}
-			else if(ballx==4){pattern[2]=0x1C;}
-			else if(ballx==5){pattern[2]=0x38;}
-			else if(ballx==6){pattern[2]=0x70;}
-			else if(ballx==7){pattern[2]=0xE0;}
-			else if(ballx==8){pattern[2]=0xE0;}
+			if(ballx==1&&rnum<80){pattern[2]=0x07;}
+			else if(ballx==2&&rnum<80){pattern[2]=0x07;}
+			else if(ballx==3&&rnum<80){pattern[2]=0x0E;}
+			else if(ballx==4&&rnum<80){pattern[2]=0x1C;}
+			else if(ballx==5&&rnum<80){pattern[2]=0x38;}
+			else if(ballx==6&&rnum<80){pattern[2]=0x70;}
+			else if(ballx==7&&rnum<80){pattern[2]=0xE0;}
+			else if(ballx==8&&rnum<80){pattern[2]=0xE0;}
 			break;
 	}
     return aistate;	
@@ -360,6 +364,7 @@ int main(void) {
     DDRC=0xFF; PORTC=0x00;
     DDRD=0xFF; PORTD=0x00;
     A2D_init();
+    srand(time(0));
     unsigned char temp2 = 0x00;
     tasks[temp2].state=RefreshADC;
     tasks[temp2].period=100;
