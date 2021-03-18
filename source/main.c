@@ -23,7 +23,7 @@ typedef struct task{
         int(*TickFct)(int);
 } task;
 
-task tasks[6];
+task tasks[7];
 
 volatile unsigned char TimerFlag = 0;
 
@@ -54,7 +54,7 @@ void TimerOff(){
 void TimerISR(){
         //TimerFlag = 1;
         unsigned char i;
-        for(i=0;i<6;i++){
+        for(i=0;i<7;i++){
                 if(tasks[i].elapsedtime>=tasks[i].period){
                         tasks[i].state=tasks[i].TickFct(tasks[i].state);
                         tasks[i].elapsedtime=0;
@@ -299,6 +299,35 @@ int movexball_tick(int bxstate){
 return bxstate;
 }
 
+unsigned char button = 0x00;
+enum gstates{initgame, resetgame};
+int game_tick(int gstate){
+	button=(~PINB)&0x01;
+     switch(gstate){	
+	case initgame:
+		if(button==0x00){gstate=initgame;}
+		else if(button==0x01){gstate=resetgame;}
+		break;
+	case resetgame:
+	//	for(int i=0;i<10;i++){
+		pattern[0]=0x07;
+		pattern[1]=0x10;
+		pattern[2]=0x38;
+		row[0]=0xFE;
+		row[1]=0xFD;
+		row[2]=0xEF;
+		ballx=5;
+		bally=2;
+		wasleft=0;
+		wasright=0;
+		gstate=initgame;
+		
+		break;
+	}
+     return gstate;
+
+}
+
 enum states{StartLED};
 int combine_tick(int state){
 //	button=~PINA&0x01;
@@ -327,6 +356,7 @@ int combine_tick(int state){
 
 int main(void) {
    // DDRA=0x00; PORTA=0xFF;
+    DDRB=0x00; PORTB=0xFF;
     DDRC=0xFF; PORTC=0x00;
     DDRD=0xFF; PORTD=0x00;
     A2D_init();
@@ -355,6 +385,11 @@ int main(void) {
     tasks[temp].period=100;
     tasks[temp2].elapsedtime=0;
     tasks[temp2].TickFct=&AI_tick;
+    ++temp2;
+    tasks[temp2].state=initgame;
+    tasks[temp2].period=100;
+    tasks[temp2].elapsedtime=0;
+    tasks[temp2].TickFct=&game_tick;
     ++temp2;
     tasks[temp2].state=StartLED;
     tasks[temp2].period=1;
