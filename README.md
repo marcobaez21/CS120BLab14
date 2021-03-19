@@ -73,6 +73,7 @@ selected,‌ ‌and‌ ‌to‌ ‌track‌ ‌the‌ ‌score‌ ‌during‌ �
 Advancement‌ ‌3‌ ‌
  ‌ ‌
 Implement‌ ‌a‌ ‌more‌ ‌sophisticated‌ ‌AI‌ ‌opponent‌ ‌for‌ ‌the‌ ‌single-player‌ ‌game‌ ‌
- ‌
- 
+
+ Final Board:
+ ![alt text](https://github.com/marcobaez21/CS120BLab14/blob/master/board.jpg)
  
