@@ -135,11 +135,17 @@ unsigned char bally = 2;
 unsigned char wasleft = 0x00;
 unsigned char wasright = 0x00;
 int rnum = 0;
+unsigned char lbutton=0x00;
+unsigned char rbutton=0x00;
+unsigned char AIBOOL = 0x01;
+unsigned char dontdisplay=0x00; 
+unsigned char score = 0x00;
 
-enum AIStates{startAI};
+enum AIStates{checkAI, startAI, NoAI};
 int AI_tick(int aistate){
 	rnum=rand()%100;
 	switch(aistate){
+
 		case startAI:
 			if(ballx==1&&rnum<80){pattern[2]=0x07;}
 			else if(ballx==2&&rnum<80){pattern[2]=0x07;}
@@ -239,7 +245,7 @@ int movexball_tick(int bxstate){
 				else if((wasright==0x01)&&(ballx==paddlecenterx)){bxstate=keepright;tasks[3].period+=5;}
 				else if((wasleft==0x00&&wasright==0x00)&&(ballx==paddlecenterx+1)){bxstate=keepleft;tasks[3].period-=5;}
 				else if((wasleft==0x00&&wasright==0x00)&&(ballx==paddlecenterx-1)){bxstate=keepright;tasks[3].period-=5;}
-				else if((wasleft==0x01||wasright==0x01)&&(ballx!=paddlecenterx+1&&ballx!=paddlecenterx&&ballx!=paddlecenterx-1)){bxstate=ballstart;}
+				else if((wasleft==0x01||wasright==0x01)&&(ballx!=paddlecenterx+1&&ballx!=paddlecenterx&&ballx!=paddlecenterx-1)){bxstate=ballstart;score++;}
 			//		bxstate=reset;
 
 			}
@@ -286,13 +292,33 @@ return bxstate;
 }
 
 unsigned char button = 0x00;
-enum gstates{initgame, resetgame};
+enum gstates{initgame, menu, startgame, resetgame};
 int game_tick(int gstate){
-	button=(~PINB)&0x01;
+	button=(~PINA>>4)&0x01;
+	lbutton=(~PINA>>5)&0x01;
+	rbutton=(~PINA>>6)&0x01;	
      switch(gstate){	
 	case initgame:
-		if(button==0x00){gstate=initgame;}
-		else if(button==0x01){gstate=resetgame;}
+//		if(button==0x00){gstate=menu;}
+//		else if(button==0x10){gstate=resetgame;}
+		gstate=menu;
+		break;
+	case menu:
+	//	transmit_data(0,1);
+	//	transmit_data(0xFF,2);
+		PORTB=0x19;
+	//	PORTB=0xFF;
+		if(lbutton&&!rbutton){gstate=startgame;AIBOOL=0x00;/*PORTB=0xFF;*/}
+		else if(!lbutton&&rbutton){gstate=startgame;AIBOOL=0x01;}
+		else{gstate=menu;}
+		dontdisplay=0x01;
+		break;
+	case startgame:
+	//	if(button==0x00){gstate=menu;}
+	//	else if(button==0x10){gstate=resetgame;}
+		PORTB=score;
+		dontdisplay=0x00;
+		gstate=startgame;
 		break;
 	case resetgame:
 	//	for(int i=0;i<10;i++){
@@ -333,18 +359,19 @@ int combine_tick(int state){
 			count++;
 			if(count==3){count=0;}
 	}
+	if(dontdisplay==0x00){
 	transmit_data(temp_pattern,1);
 	transmit_data(temp_row,2);
 	transmit_data(0,1);
-	transmit_data(0xFF,2);
+	transmit_data(0xFF,2);}
 //	PORTC=0xFF;
 //	PORTD=0xFB;
 	return state;
 }
 
 int main(void) {
-   // DDRA=0x00; PORTA=0xFF;
-    DDRB=0x00; PORTB=0xFF;
+    DDRA=0x00; PORTA=0xFF;
+    DDRB=0xFF; PORTA=0x00;
     DDRC=0xFF; PORTC=0x00;
     DDRD=0xFF; PORTD=0x00;
     A2D_init();
